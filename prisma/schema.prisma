@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model kategori {
+  username      String? @db.VarChar(32)
+  budget        Int
+  id_kategori   Int     @id @default(autoincrement())
+  nama_kategori String? @db.VarChar(32)
+  users         users?  @relation(fields: [username], references: [username], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  username String     @id @db.VarChar(32)
+  password String     @db.VarChar(32)
+  kategori kategori[]
+  wallet   wallet[]
+}
+
+model wallet {
+  username  String? @db.VarChar(32)
+  saldo     Int
+  id_wallet Int     @id @default(autoincrement())
+  tipe      String? @db.VarChar(32)
+  users     users?  @relation(fields: [username], references: [username], onDelete: NoAction, onUpdate: NoAction)
+}
